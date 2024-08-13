@@ -3,14 +3,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import linkedList as lkl
 
-class Cell:
-    def __init__(self, line, column, value):
-        self.i = line
-        self.j = column
-        self.value = value
-
-
-
 # Grid size
 N = 100
 # Create an initial random grid
@@ -26,12 +18,12 @@ ListOfAlive = lkl.LinkedList()
 #        checar apenas as que estão adjacentes às vivas.
 
 # iterar sobre os valores da matriz para identificar as células vivas e colocar na lista linkada
-for i in range(100):
-    # linha "i"
-    for j in range(100):
-        #coluna "j"
-        if grid[i, j] == 1:
-            ListOfAlive.insertAtEnd(Cell(i, j, grid[i, j]))
+# for i in range(100):
+#     # linha "i"
+#     for j in range(100):
+#         #coluna "j"
+#         if grid[i, j] == 1:
+#             ListOfAlive.insertAtEnd(Cell(i, j, grid[i, j]))
 
 
 def update(frameNum, img, grid):
@@ -45,47 +37,171 @@ def update(frameNum, img, grid):
     # 4 - Qualquer célula morta com exatamente três vizinhos vivos torna-se uma célula viva.
     # após as alterações feitas no grid
     
-    # if (ListOfAlive.head):
-    #     currentNode = ListOfAlive.head
-
-    #     while (currentNode):
-    #         sum = 0
-
-    #         for num in range(3):
-    #             if ((currentNode.data.i - 1) >= 0) and grid[(currentNode.data.i - 1), (currentNode.data.j - 1 + num)]):
-
-
-
-    #         up, down, left, right = 0
-    #         if (currentNode.data.i - 1) >= 0 and currentNode.data.value[(currentNode.data.i - 1), currentNode.data.j]:
-    #             up = 1
-
-    #         if (currentNode.data.i + 1) <= 99 and currentNode.data.value[(currentNode.data.i + 1), currentNode.data.j]:
-    #             down = 1
-            
-    #         if (currentNode.data.j - 1) >= 0 and currentNode.data.value[currentNode.data.i, (currentNode.data.j - 1)]:
-    #             left = 1
-            
-
-    #         if (currentNode.data.j + 1) >= 0 and currentNode.data.value[currentNode.data.i, (currentNode.data.j + 1)]:
-    #             right = 1
-            
-    #         match sum:
-    #             case (sum < 2):
-                    
-    #             case
-            
-    for i in range(100):
+    
+    newGrid = np.zeros((100, 100), dtype=int)
+    # primeiro checamos a parte interna do grid
+    for i in range(1, 98):
     # linha "i"
+        for j in range(1, 98):
+            #coluna "j"
+            sum = 0
+
+            if grid[i, j - 1]:
+                sum += 1
+            
+            if grid[i, j + 1]:
+                sum += 1
+
+            for num in range(3):
+                if grid[(i - 1), (j - 1 + num)]:
+                    sum += 1
+
+                if grid[(i + 1), (j - 1 + num)]:
+                    sum += 1
+
+            # se a quantidade de células vivas é menor que 2 o newGrid continua com o valor igual a zero
+            if grid[i, j] and (sum < 2 or sum > 3):
+                newGrid[i, j] = 0
+
+            elif grid[i, j] and (sum == 2 or sum == 3):
+                newGrid[i, j] = 1
+
+            elif grid[i, j] == 0 and sum == 3:
+                newGrid[i, j] = 1
+    
+
+    for i in [0, 99]:
         for j in range(100):
             #coluna "j"
-            for num in range(3):
-                if (i > 0 and i < 99):
-                    
+            sum = 0
 
-    return img
+            match i:
+                case 0:
+                    match j:
+                        case 0:
+                            # right
+                            if grid[i, j + 1]:
+                                sum += 1
+
+                            # down
+                            for num in range(2):
+                                if grid[(i + 1), (j + num)]:
+                                    sum += 1
+                        case 99:
+                            # left
+                            if grid[i, j - 1]:
+                                sum += 1
+
+                            # down
+                            for num in range(2):
+                                if grid[(i + 1), (j  - 1 + num)]:
+                                    sum += 1
+                        case _:
+
+                            # left
+                            if grid[i, j - 1]:
+                                sum += 1
+                            
+                            # right
+                            if grid[i, j + 1]:
+                                sum += 1
+                            
+                            # down
+                            for num in range(3):
+                                if grid[(i + 1), (j - 1 + num)]:
+                                    sum += 1
+                
+                case 99:
+                    match j:
+                        case 0:
+                            # right
+                            if grid[i, j + 1]:
+                                sum += 1
+
+                            # up
+                            for num in range(2):
+                                if grid[(i - 1), (j + num)]:
+                                    sum += 1
+                        case 99:
+                            # left
+                            if grid[i, j - 1]:
+                                sum += 1
+
+                            # up
+                            for num in range(2):
+                                if grid[(i - 1), (j - 1 + num)]:
+                                    sum += 1
+                        case _:
+                            # left
+                            if grid[i, j - 1]:
+                                sum += 1
+                            
+                            # right
+                            if grid[i, j + 1]:
+                                sum += 1
+                            
+                            # down
+                            for num in range(3):
+                                if grid[(i - 1), (j - 1 + num)]:
+                                    sum += 1
+
+            # se a quantidade de células vivas é menor que 2 o newGrid continua com o valor igual a zero
+            if grid[i, j] and (sum < 2 or sum > 3):
+                newGrid[i, j] = 0
+
+            elif grid[i, j] and (sum == 2 or sum == 3):
+                newGrid[i, j] = 1
+
+            elif grid[i, j] == 0 and sum == 3:
+                newGrid[i, j] = 1
+
+    
+    for i in range(1, 98):
+        for j in [0, 99]:
+            sum = 0
+            match j:
+                case 0:
+                    # left
+                    if grid[i - 1, j]:
+                        sum += 1
+                    
+                    # right
+                    if grid[i + 1, j]:
+                        sum += 1
+                    
+                    # down
+                    for num in range(3):
+                        if grid[(i - 1 + num), (j + 1)]:
+                            sum += 1
+                case 99:
+                    # left
+                    if grid[i - 1, j]:
+                        sum += 1
+                    
+                    # right
+                    if grid[i + 1, j]:
+                        sum += 1
+                    
+                    # down
+                    for num in range(3):
+                        if grid[(i - 1 + num), (j - 1)]:
+                            sum += 1
+            
+            # se a quantidade de células vivas é menor que 2 o newGrid continua com o valor igual a zero
+            if grid[i, j] and (sum < 2 or sum > 3):
+                newGrid[i, j] = 0
+
+            elif grid[i, j] and (sum == 2 or sum == 3):
+                newGrid[i, j] = 1
+
+            elif grid[i, j] == 0 and sum == 3:
+                newGrid[i, j] = 1
+
+
+    img.set(data=newGrid)
+    return img, newGrid
 
 fig, ax = plt.subplots()
 img = ax.imshow(grid, interpolation='nearest')
-ani = animation.FuncAnimation(fig, update, fargs=(img, grid), frames=120, interval=30)
+ani = animation.FuncAnimation(fig, update, fargs=(img, grid), frames=120, interval=1000)
 plt.show()
