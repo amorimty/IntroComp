@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import linkedList as lkl
 
-class Cell:
-    def __init__(self, line, column, value):
-        self.i = line
-        self.j = column
-        self.value = value
+# class Cell:
+#     def __init__(self, line, column, value):
+#         self.i = line
+#         self.j = column
+#         self.value = value
 
 
 
@@ -26,12 +26,12 @@ ListOfAlive = lkl.LinkedList()
 #        checar apenas as que estão adjacentes às vivas.
 
 # iterar sobre os valores da matriz para identificar as células vivas e colocar na lista linkada
-for i in range(100):
-    # linha "i"
-    for j in range(100):
-        #coluna "j"
-        if grid[i, j] == 1:
-            ListOfAlive.insertAtEnd(Cell(i, j, grid[i, j]))
+# for i in range(100):
+#     # linha "i"
+#     for j in range(100):
+#         #coluna "j"
+#         if grid[i, j] == 1:
+#             ListOfAlive.insertAtEnd(Cell(i, j, grid[i, j]))
 
 
 def update(frameNum, img, grid):
@@ -45,8 +45,11 @@ def update(frameNum, img, grid):
         # 4 - Qualquer célula morta com exatamente três vizinhos vivos torna-se uma célula viva.
         # após as alterações feitas no grid
     
+    # print("foi 1")
+    Array = img.get_array()
+    # print("foi 2")
     
-    newGrid = np.zeros((100, 100), dtype=int)
+    newArray = np.zeros((100, 100), dtype=int)
     # primeiro checamos a parte interna do grid
     for i in range(1, 98):
     # linha "i"
@@ -54,28 +57,28 @@ def update(frameNum, img, grid):
             #coluna "j"
             sum = 0
 
-            if grid[i, j - 1]:
+            if Array[i, j - 1]:
                 sum += 1
             
-            if grid[i, j + 1]:
+            if Array[i, j + 1]:
                 sum += 1
 
             for num in range(3):
-                if grid[(i - 1), (j - 1 + num)]:
+                if Array[(i - 1), (j - 1 + num)]:
                     sum += 1
 
-                if grid[(i + 1), (j - 1 + num)]:
+                if Array[(i + 1), (j - 1 + num)]:
                     sum += 1
 
             # se a quantidade de células vivas é menor que 2 o newGrid continua com o valor igual a zero
-            if grid[i, j] and (sum < 2 or sum > 3):
-                newGrid[i, j] = 0
+            if Array[i, j] and (sum < 2 or sum > 3):
+                newArray[i, j] = 0
 
-            elif grid[i, j] and (sum == 2 or sum == 3):
-                newGrid[i, j] = 1
+            elif Array[i, j] and (sum == 2 or sum == 3):
+                newArray[i, j] = 1
 
-            elif grid[i, j] == 0 and sum == 3:
-                newGrid[i, j] = 1
+            elif Array[i, j] == 0 and sum == 3:
+                newArray[i, j] = 1
     
 
     for i in [0, 99]:
@@ -88,80 +91,80 @@ def update(frameNum, img, grid):
                     match j:
                         case 0:
                             # right
-                            if grid[i, j + 1]:
+                            if Array[i, j + 1]:
                                 sum += 1
 
                             # down
                             for num in range(2):
-                                if grid[(i + 1), (j + num)]:
+                                if Array[(i + 1), (j + num)]:
                                     sum += 1
                         case 99:
                             # left
-                            if grid[i, j - 1]:
+                            if Array[i, j - 1]:
                                 sum += 1
 
                             # down
                             for num in range(2):
-                                if grid[(i + 1), (j  - 1 + num)]:
+                                if Array[(i + 1), (j  - 1 + num)]:
                                     sum += 1
                         case _:
 
                             # left
-                            if grid[i, j - 1]:
+                            if Array[i, j - 1]:
                                 sum += 1
                             
                             # right
-                            if grid[i, j + 1]:
+                            if Array[i, j + 1]:
                                 sum += 1
                             
                             # down
                             for num in range(3):
-                                if grid[(i + 1), (j - 1 + num)]:
+                                if Array[(i + 1), (j - 1 + num)]:
                                     sum += 1
                 
                 case 99:
                     match j:
                         case 0:
                             # right
-                            if grid[i, j + 1]:
+                            if Array[i, j + 1]:
                                 sum += 1
 
                             # up
                             for num in range(2):
-                                if grid[(i - 1), (j + num)]:
+                                if Array[(i - 1), (j + num)]:
                                     sum += 1
                         case 99:
                             # left
-                            if grid[i, j - 1]:
+                            if Array[i, j - 1]:
                                 sum += 1
 
                             # up
                             for num in range(2):
-                                if grid[(i - 1), (j - 1 + num)]:
+                                if Array[(i - 1), (j - 1 + num)]:
                                     sum += 1
                         case _:
                             # left
-                            if grid[i, j - 1]:
+                            if Array[i, j - 1]:
                                 sum += 1
                             
                             # right
-                            if grid[i, j + 1]:
+                            if Array[i, j + 1]:
                                 sum += 1
                             
                             # down
                             for num in range(3):
-                                if grid[(i - 1), (j - 1 + num)]:
+                                if Array[(i - 1), (j - 1 + num)]:
                                     sum += 1
 
             # se a quantidade de células vivas é menor que 2 o newGrid continua com o valor igual a zero
-            if grid[i, j] and (sum < 2 or sum > 3):
-                newGrid[i, j] = 0
+            if Array[i, j] and (sum < 2 or sum > 3):
+                newArray[i, j] = 0
 
-            elif grid[i, j] and (sum == 2 or sum == 3):
-                newGrid[i, j] = 1
+            elif Array[i, j] and (sum == 2 or sum == 3):
+                newArray[i, j] = 1
 
-            elif grid[i, j] == 0 and sum == 3:
-                newGrid[i, j] = 1
+            elif Array[i, j] == 0 and sum == 3:
+                newArray[i, j] = 1
 
     
     for i in range(1, 98):
@@ -170,46 +173,47 @@ def update(frameNum, img, grid):
             match j:
                 case 0:
                     # left
-                    if grid[i - 1, j]:
+                    if Array[i - 1, j]:
                         sum += 1
                     
                     # right
-                    if grid[i + 1, j]:
+                    if Array[i + 1, j]:
                         sum += 1
                     
                     # down
                     for num in range(3):
-                        if grid[(i - 1 + num), (j + 1)]:
+                        if Array[(i - 1 + num), (j + 1)]:
                             sum += 1
                 case 99:
                     # left
-                    if grid[i - 1, j]:
+                    if Array[i - 1, j]:
                         sum += 1
                     
                     # right
-                    if grid[i + 1, j]:
+                    if Array[i + 1, j]:
                         sum += 1
                     
                     # down
                     for num in range(3):
-                        if grid[(i - 1 + num), (j - 1)]:
+                        if Array[(i - 1 + num), (j - 1)]:
                             sum += 1
             
             # se a quantidade de células vivas é menor que 2 o newGrid continua com o valor igual a zero
-            if grid[i, j] and (sum < 2 or sum > 3):
-                newGrid[i, j] = 0
+            if Array[i, j] and (sum < 2 or sum > 3):
+                newArray[i, j] = 0
 
-            elif grid[i, j] and (sum == 2 or sum == 3):
-                newGrid[i, j] = 1
+            elif Array[i, j] and (sum == 2 or sum == 3):
+                newArray[i, j] = 1
 
-            elif grid[i, j] == 0 and sum == 3:
-                newGrid[i, j] = 1
+            elif Array[i, j] == 0 and sum == 3:
+                newArray[i, j] = 1
 
 
-    img.set(data=newGrid)
-    return img, newGrid
+    img.set(data=newArray)
+
+    return img
 
 fig, ax = plt.subplots()
 img = ax.imshow(grid, interpolation='nearest')
-ani = animation.FuncAnimation(fig, update, fargs=(img, grid), frames=120, interval=1000)
+ani = animation.FuncAnimation(fig, update, fargs=(img, grid), frames=200, interval=10)
 plt.show()
